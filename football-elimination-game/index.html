@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Vanta - 360° Elimination Game</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Rajdhani:wght@500;600;700&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-wrapper d-flex flex-column">
+        <!-- Top Navigation / Broadcast Header -->
+        <header class="broadcast-header py-2 px-3">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <!-- Brand Title -->
+                <div class="brand-title d-flex align-items-center">
+                    <i class="fa-solid fa-trophy brand-icon text-warning mr-2"></i>
+                    <div>
+                        <h1 class="m-0 title-text">Football Vanta</h1>
+                        <div class="subtitle-text">360° DYNAMIC PHYSICS ELIMINATION</div>
+                    </div>
+                </div>
+
+                <!-- Match Status Ticker -->
+                <div class="match-ticker d-none d-md-flex align-items-center px-3 py-1 rounded-pill">
+                    <span class="badge badge-warning text-dark font-weight-bold mr-2" id="roundBadge">ROUND 1</span>
+                    <span class="timer-text font-weight-bold" id="matchTimer"><i class="fa-regular fa-clock mr-1"></i>00:00</span>
+                    <span class="divider mx-2">|</span>
+                    <span class="mode-text text-uppercase text-cyan" id="gamePhaseText">QUALIFYING STAGE</span>
+                </div>
+
+                <!-- Audio & Quick Controls -->
+                <div class="header-controls d-flex align-items-center">
+                    <button class="btn btn-outline-cyan btn-sm rounded-circle mr-2" id="btnMusicToggle" title="Toggle Background Music">
+                        <i class="fa-solid fa-music"></i>
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm rounded-circle mr-2" id="btnSfxToggle" title="Toggle Sound FX">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <button class="btn btn-outline-light btn-sm d-md-none" type="button" data-toggle="collapse" data-target="#controlsCollapse">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Tournament Layout -->
+        <main class="main-content container-fluid flex-grow-1 py-3">
+            <div class="row h-100 align-items-center">
+                
+                <!-- Left Sidebar: Qualified Leaderboard & Rules -->
+                <aside class="col-lg-3 col-md-4 mb-3 mb-md-0">
+                    <!-- Win Percentage Leaderboard Card -->
+                    <div class="card glass-card border-cyan mb-3">
+                        <div class="card-header bg-cyan-glass text-cyan d-flex justify-content-between align-items-center py-2">
+                            <span class="font-weight-bold text-uppercase tracking-wider"><i class="fa-solid fa-chart-pie mr-2"></i>Player Win Rate (%)</span>
+                            <span class="badge badge-cyan" id="winRatePlayerCount">16 Players</span>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="winrate-list" id="winRateList">
+                                <!-- Populated dynamically by script.js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tournament Control Card -->
+                    <div class="card glass-card collapse d-md-block" id="controlsCollapse">
+                        <div class="card-header bg-dark-glass text-white py-2 font-weight-bold text-uppercase">
+                            <i class="fa-solid fa-gamepad mr-2 text-warning"></i>Match Controls
+                        </div>
+                        <div class="card-body p-3">
+                            <!-- Primary Action Buttons -->
+                            <div class="btn-group w-100 mb-3" role="group">
+                                <button class="btn btn-success font-weight-bold text-uppercase shadow-sm" id="btnStart">
+                                    <i class="fa-solid fa-play mr-1"></i>Start Round
+                                </button>
+                                <button class="btn btn-warning font-weight-bold text-uppercase shadow-sm" id="btnPause" disabled>
+                                    <i class="fa-solid fa-pause mr-1"></i>Pause
+                                </button>
+                                <button class="btn btn-danger font-weight-bold text-uppercase shadow-sm" id="btnReset">
+                                    <i class="fa-solid fa-rotate-left mr-1"></i>Reset
+                                </button>
+                            </div>
+
+                            <!-- Settings Sliders -->
+                            <div class="form-group mb-2">
+                                <div class="d-flex justify-content-between text-muted small mb-1">
+                                    <span>Player Count:</span>
+                                    <strong class="text-white" id="playerCountVal">16 Players</strong>
+                                </div>
+                                <input type="range" class="custom-range" id="playerCountSlider" min="10" max="16" step="1" value="16">
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <div class="d-flex justify-content-between text-muted small mb-1">
+                                    <span>Bouncing Chaos:</span>
+                                    <strong class="text-cyan" id="bouncingSpeedVal">Normal</strong>
+                                </div>
+                                <input type="range" class="custom-range" id="speedSlider" min="1" max="3" step="1" value="2">
+                            </div>
+
+                            <!-- Toggles -->
+                            <div class="custom-control custom-switch mt-2">
+                                <input type="checkbox" class="custom-control-input" id="switchAutoNext" checked>
+                                <label class="custom-control-label text-light small" for="switchAutoNext">Auto-Start Next Round</label>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center Column: 360 Physics Arena Canvas -->
+                <section class="col-lg-6 col-md-8 text-center d-flex flex-column align-items-center justify-content-center my-2">
+                    <div class="arena-stage-container">
+                        <!-- Canvas Header Info: Subscribe Highlight -->
+                        <div class="arena-header text-uppercase tracking-wider font-weight-bold mb-2">
+                            <span class="subscribe-badge">
+                                <i class="fa-solid fa-bell bell-anim mr-2 text-warning"></i>
+                                <span id="arenaTitle" class="subscribe-text">SUBSCRIBE</span>
+                            </span>
+                        </div>
+
+                        <!-- 2D Rigid Body Physics Canvas -->
+                        <div class="canvas-wrapper position-relative">
+                            <canvas id="gameCanvas" width="600" height="600"></canvas>
+
+                            <!-- Center Spotlight Overlay Glow -->
+                            <div class="arena-center-glow"></div>
+                        </div>
+
+                        <!-- Player Count & Progress Bar -->
+                        <div class="remaining-counter-box mt-3 w-100 px-4">
+                            <div class="d-flex justify-content-between align-items-center mb-1 text-uppercase font-weight-bold">
+                                <span class="text-cyan small"><i class="fa-solid fa-users mr-1"></i>Remaining Players</span>
+                                <span class="counter-number text-warning" id="remainingCountText">16 / 16</span>
+                            </div>
+                            <div class="progress progress-dark rounded-pill" style="height: 10px;">
+                                <div class="progress-bar bg-gradient-cyan rounded-pill" id="remainingProgressBar" role="progressbar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Sidebar: Eliminated Players -->
+                <aside class="col-lg-3 col-md-12">
+                    <div class="card glass-card border-danger h-100">
+                        <div class="card-header bg-danger-glass text-danger py-2 font-weight-bold text-uppercase d-flex justify-content-between align-items-center">
+                            <span><i class="fa-solid fa-skull mr-2"></i>Eliminated Players</span>
+                            <span class="badge badge-danger" id="eliminatedCount">0</span>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="eliminated-grid" id="eliminatedGrid">
+                                <div class="empty-state text-center text-muted py-4">
+                                    <i class="fa-solid fa-ghost fa-2x mb-2 opacity-5"></i>
+                                    <p class="small m-0">No players eliminated yet.<br>Watch the rotating gap!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Winner Celebration Overlay Modal -->
+    <div class="modal fade winner-modal" id="winnerModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content glass-modal border-warning">
+                <!-- Canvas Confetti Background -->
+                <canvas id="confettiCanvas" class="position-absolute w-100 h-100" style="pointer-events: none; z-index: 1;"></canvas>
+
+                <div class="modal-body text-center p-4 position-relative" style="z-index: 2;">
+                    <!-- Trophy Header -->
+                    <div class="winner-trophy-container mb-3">
+                        <i class="fa-solid fa-trophy trophy-anim text-warning"></i>
+                    </div>
+
+                    <h5 class="text-uppercase tracking-widest text-warning font-weight-bold mb-1" id="winnerHeaderTitle">ROUND QUALIFIER</h5>
+                    <h2 class="winner-title font-weight-black text-white text-uppercase mb-3" id="winnerMainTitle">WINNER!</h2>
+
+                    <!-- Winner Card Showcase -->
+                    <div class="winner-card-showcase d-inline-block p-4 rounded-circle glass-card mb-3 position-relative">
+                        <div class="winner-avatar-ring">
+                            <img id="winnerAvatarImg" src="" alt="Winner Avatar" class="rounded-circle winner-avatar img-fluid">
+                            <div class="winner-jersey-tag" id="winnerJerseyTag">#10</div>
+                        </div>
+                    </div>
+
+                    <h3 class="winner-name font-weight-bold text-cyan mb-1" id="winnerName">PLAYER NAME</h3>
+                    <p class="winner-team text-white-50 font-weight-bold mb-3" id="winnerTeam"><span id="winnerFlag">🇦🇷</span> Inter Miami • Argentina</p>
+
+                    <!-- Stats Bar -->
+                    <div class="winner-stats-container d-flex justify-content-center gap-3 mb-4">
+                        <div class="stat-pill px-3 py-2 rounded-pill bg-dark-glass border border-secondary mr-2">
+                            <small class="text-muted text-uppercase d-block">Survival Time</small>
+                            <strong class="text-warning" id="winnerTime">00:45</strong>
+                        </div>
+                        <div class="stat-pill px-3 py-2 rounded-pill bg-dark-glass border border-secondary">
+                            <small class="text-muted text-uppercase d-block">Tournament Status</small>
+                            <strong class="text-cyan" id="winnerStatus">QUALIFIED FOR FINAL</strong>
+                        </div>
+                    </div>
+
+                    <!-- Modal Action Buttons -->
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-warning btn-lg font-weight-bold px-4 rounded-pill mr-2" id="btnNextRoundModal">
+                            <i class="fa-solid fa-forward mr-2"></i>NEXT ROUND
+                        </button>
+                        <button class="btn btn-outline-light btn-lg font-weight-bold px-4 rounded-pill" id="btnRestartModal" data-dismiss="modal">
+                            <i class="fa-solid fa-rotate-left mr-2"></i>RESTART GAME
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+    </audio>
+    </div>
+
+    <!-- JS Libraries: jQuery, Popper.js, Bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <!-- Custom Game Engine -->
+    <script src="script.js"></script>
+</body>
+</html>
