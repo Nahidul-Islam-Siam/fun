@@ -24,9 +24,14 @@
 body {
     background-color: var(--bg-dark);
     background-image: 
-        radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.12) 0%, transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(255, 193, 7, 0.08) 0%, transparent 50%),
-        linear-gradient(180deg, #070b19 0%, #03050c 100%);
+        radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(255, 193, 7, 0.1) 0%, transparent 50%),
+        linear-gradient(rgba(7, 11, 25, 0.45), rgba(7, 11, 25, 0.55)),
+        url('assets/bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: #e2e8f0;
     font-family: var(--font-body);
     min-height: 100vh;
@@ -185,9 +190,11 @@ body {
 }
 
 .canvas-wrapper {
+    position: relative;
     width: 100%;
-    padding-bottom: 100%; /* 1:1 Aspect Ratio */
-    height: 0;
+    max-width: 560px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
     border-radius: 50%;
     box-shadow: 0 0 50px rgba(0, 210, 255, 0.25), inset 0 0 30px rgba(0, 0, 0, 0.8);
     background: radial-gradient(circle at center, #0f1c3f 0%, #080f24 70%, #030611 100%);
@@ -202,6 +209,7 @@ body {
     height: 100%;
     border-radius: 50%;
     cursor: crosshair;
+    touch-action: none;
 }
 
 .arena-center-glow {
@@ -262,17 +270,18 @@ body {
 }
 
 .winrate-avatar {
-    width: 26px;
-    height: 26px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1.5px solid var(--accent-cyan);
-    margin-right: 8px;
+    border: 2.5px solid var(--accent-cyan);
+    margin-right: 10px;
     flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.45);
 }
 
 .winrate-name {
-    font-size: 0.84rem;
+    font-size: 0.92rem;
     font-weight: 700;
     color: #ffffff;
     white-space: nowrap;
@@ -282,14 +291,14 @@ body {
 
 .winrate-pct-text {
     font-family: var(--font-sub);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 800;
     color: var(--accent-gold);
     flex-shrink: 0;
 }
 
 .winrate-progress-track {
-    height: 6px;
+    height: 7px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
     overflow: hidden;
@@ -308,7 +317,7 @@ body {
     max-height: 600px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
     gap: 10px;
     padding: 6px;
 }
@@ -316,11 +325,11 @@ body {
 .eliminated-card {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 9px 12px;
     background: rgba(255, 51, 102, 0.12);
     border: 1px solid rgba(255, 51, 102, 0.3);
     border-radius: 10px;
-    opacity: 0.9;
+    opacity: 0.95;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     animation: slideInLeft 0.3s ease;
@@ -335,14 +344,15 @@ body {
 }
 
 .eliminated-avatar {
-    width: 34px;
-    height: 34px;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     object-fit: cover;
-    filter: grayscale(70%);
-    border: 2px solid var(--accent-red);
-    margin-right: 10px;
+    filter: grayscale(60%);
+    border: 3px solid var(--accent-red);
+    margin-right: 12px;
     flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(255, 51, 102, 0.45);
 }
 
 .eliminated-name {
@@ -418,8 +428,8 @@ body {
 
 .winner-avatar-ring {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 190px;
+    height: 190px;
     margin: 0 auto;
 }
 
@@ -427,8 +437,8 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 4px solid var(--accent-gold);
-    box-shadow: 0 0 30px rgba(255, 193, 7, 0.8);
+    border: 5px solid var(--accent-gold);
+    box-shadow: 0 0 35px rgba(255, 193, 7, 0.9);
 }
 
 .winner-jersey-tag {
@@ -475,18 +485,107 @@ body {
     to { opacity: 1; }
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .title-text {
-        font-size: 1.5rem;
+/* Touch & Mobile Responsive Polish */
+#gameCanvas {
+    touch-action: none;
+}
+
+@media (max-width: 991.98px) {
+    .broadcast-header {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+    .brand-title {
+        transform: scale(0.95);
     }
     .arena-stage-container {
-        max-width: 360px;
-    }
-    .winner-title {
-        font-size: 2.5rem;
+        max-width: 480px;
+        width: 100%;
+        margin: 0 auto;
     }
     .eliminated-grid {
-        grid-template-columns: 1fr;
+        min-height: 240px;
+        max-height: 400px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+}
+
+@media (max-width: 767.98px) {
+    .title-text {
+        font-size: 1.6rem !important;
+        letter-spacing: 1px;
+    }
+    .subtitle-text {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+    }
+    .arena-stage-container {
+        max-width: 380px;
+        width: 100%;
+    }
+    .subscribe-badge {
+        padding: 4px 18px;
+    }
+    .subscribe-text {
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+    }
+    .bell-anim {
+        font-size: 1.1rem;
+    }
+    .winrate-list {
+        max-height: 220px;
+    }
+    .eliminated-grid {
+        min-height: 200px;
+        max-height: 350px;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+    .winner-title {
+        font-size: 2.3rem !important;
+    }
+    .winner-name {
+        font-size: 1.8rem !important;
+    }
+    .winner-avatar-ring {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .arena-stage-container {
+        max-width: 310px;
+    }
+    .remaining-counter-box {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    .subscribe-badge {
+        padding: 3px 14px;
+    }
+    .subscribe-text {
+        font-size: 1.1rem;
+        letter-spacing: 1.5px;
+    }
+    .eliminated-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 6px;
+    }
+    .eliminated-card {
+        padding: 6px 8px;
+    }
+    .eliminated-avatar {
+        width: 28px;
+        height: 28px;
+    }
+    .eliminated-name {
+        font-size: 0.78rem;
+    }
+    .winner-modal .modal-body {
+        padding: 1rem !important;
+    }
+    .winner-title {
+        font-size: 1.8rem !important;
     }
 }
