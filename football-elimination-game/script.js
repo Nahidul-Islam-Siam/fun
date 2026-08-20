@@ -13,14 +13,15 @@ const PLAYERS_MASTER = [
     { id: 6, name: "Jude Bellingham", team: "Real Madrid", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", jersey: 5, color: "#ffffff", avatarUrl: "assets/players/player6.jpg", wins: 0 },
     { id: 7, name: "Kevin De Bruyne", team: "Man City", country: "Belgium", flag: "🇧🇪", jersey: 17, color: "#fdda24", avatarUrl: "assets/players/player7.jpg", wins: 0 },
     { id: 8, name: "Mohamed Salah", team: "Liverpool", country: "Egypt", flag: "🇪🇬", jersey: 11, color: "#c8102e", avatarUrl: "assets/players/player8.jpg", wins: 0 },
-    { id: 9, name: "Luka Modrić", team: "Real Madrid", country: "Croatia", flag: "🇭🇷", jersey: 10, color: "#ff0000", avatarUrl: "assets/players/player9.jpg", wins: 0 },
-    { id: 10, name: "Robert Lewandowski", team: "Barcelona", country: "Poland", flag: "🇵🇱", jersey: 9, color: "#dc143c", avatarUrl: "assets/players/player10.jpg", wins: 0 },
-    { id: 11, name: "Harry Kane", team: "Bayern Munich", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", jersey: 9, color: "#dd0000", avatarUrl: "assets/players/player11.jpg", wins: 0 },
-    { id: 12, name: "Lamine Yamal", team: "Barcelona", country: "Spain", flag: "🇪🇸", jersey: 19, color: "#aa151b", avatarUrl: "assets/players/player12.jpg", wins: 0 },
-    { id: 13, name: "Bukayo Saka", team: "Arsenal", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", jersey: 7, color: "#ef0107", avatarUrl: "assets/players/player13.jpg", wins: 0 },
-    { id: 14, name: "Antoine Griezmann", team: "Atletico Madrid", country: "France", flag: "🇫🇷", jersey: 7, color: "#cb3524", avatarUrl: "assets/players/player14.jpg", wins: 0 },
-    { id: 15, name: "Thibaut Courtois", team: "Real Madrid", country: "Belgium", flag: "🇧🇪", jersey: 1, color: "#f1c40f", avatarUrl: "assets/players/player15.jpg", wins: 0 },
-    { id: 16, name: "Virgil van Dijk", team: "Liverpool", country: "Netherlands", flag: "🇳🇱", jersey: 4, color: "#ff4500", avatarUrl: "assets/players/player16.jpg", wins: 0 }
+    { id: 9, name: "Harry Kane", team: "Bayern Munich", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", jersey: 9, color: "#dd0000", avatarUrl: "assets/players/player11.jpg", wins: 0 },
+    { id: 10, name: "Lamine Yamal", team: "Barcelona", country: "Spain", flag: "🇪🇸", jersey: 19, color: "#aa151b", avatarUrl: "assets/players/player12.jpg", wins: 0 },
+    { id: 11, name: "Rodrygo", team: "Real Madrid", country: "Brazil", flag: "🇧🇷", jersey: 11, color: "#eab308", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Rodrygo_2023_%28cropped%29.jpg/500px-Rodrygo_2023_%28cropped%29.jpg", wins: 0 },
+    { id: 12, name: "Cole Palmer", team: "Chelsea", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", jersey: 20, color: "#034694", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Cole_Palmer_2025_FIFA_Club_World_Cup_Final.jpg", wins: 0 },
+    { id: 13, name: "Pedri", team: "Barcelona", country: "Spain", flag: "🇪🇸", jersey: 8, color: "#aa151b", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Pedri_France_v_Spain_7.24.26-245.jpg/500px-Pedri_France_v_Spain_7.24.26-245.jpg", wins: 0 },
+    { id: 14, name: "Gavi", team: "Barcelona", country: "Spain", flag: "🇪🇸", jersey: 6, color: "#004d98", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Gavi_France_v_Spain_7.24.26-275_%28cropped%29.jpg/500px-Gavi_France_v_Spain_7.24.26-275_%28cropped%29.jpg", wins: 0 },
+    { id: 15, name: "Julián Álvarez", team: "Atletico Madrid", country: "Argentina", flag: "🇦🇷", jersey: 19, color: "#75aadb", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Julian_Alvarez_Argentina_v_Spain_19_July_2026-052_%28cropped%29.jpg", wins: 0 },
+    { id: 16, name: "Michael Olise", team: "Bayern Munich", country: "France", flag: "🇫🇷", jersey: 17, color: "#dc052d", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/0/04/Michael_Olise_France_v_Senegal_16_June_2026-307_%28cropped%29.jpg", wins: 0 },
+    { id: 17, name: "Raphinha", team: "Barcelona", country: "Brazil", flag: "🇧🇷", jersey: 11, color: "#db0030", avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Raphinha_Brazil_V_Morocco_13_June_2026-133_%28cropped%29.jpg", wins: 0 }
 ];
 
 // --- 2. AUDIO SYNTHESIZER & SOUND FX ENGINE ---
@@ -242,7 +243,7 @@ class FootballArenaGame {
         this.confetti = new ConfettiEngine(document.getElementById("confettiCanvas"));
 
         // Game Settings & State
-        this.maxPlayerCount = 16;
+        this.maxPlayerCount = 17;
         this.currentRound = 1;
         this.speedMultiplier = 1.0;
         this.isRunning = false;
@@ -276,25 +277,32 @@ class FootballArenaGame {
     preloadImages() {
         PLAYERS_MASTER.forEach(p => {
             const img = new Image();
+            img.crossOrigin = "Anonymous";
             img.src = p.avatarUrl;
             img.onload = () => { this.imageCache[p.id] = img; };
             img.onerror = () => {
-                // Fallback SVG data URL image
-                const canvas = document.createElement("canvas");
-                canvas.width = 100;
-                canvas.height = 100;
-                const ctx = canvas.getContext("2d");
-                ctx.fillStyle = p.color;
-                ctx.fillRect(0, 0, 100, 100);
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 40px sans-serif";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(p.name.charAt(0), 50, 50);
-                
-                const fallbackImg = new Image();
-                fallbackImg.src = canvas.toDataURL();
-                this.imageCache[p.id] = fallbackImg;
+                // Try local fallback image asset
+                const localFallback = new Image();
+                localFallback.src = `assets/players/player${p.id}.jpg`;
+                localFallback.onload = () => { this.imageCache[p.id] = localFallback; };
+                localFallback.onerror = () => {
+                    // SVG/Canvas generated fallback badge
+                    const canvas = document.createElement("canvas");
+                    canvas.width = 120;
+                    canvas.height = 120;
+                    const ctx = canvas.getContext("2d");
+                    ctx.fillStyle = p.color || "#00d2ff";
+                    ctx.fillRect(0, 0, 120, 120);
+                    ctx.fillStyle = "#ffffff";
+                    ctx.font = "bold 44px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(p.name.charAt(0), 60, 60);
+                    
+                    const fallbackImg = new Image();
+                    fallbackImg.src = canvas.toDataURL();
+                    this.imageCache[p.id] = fallbackImg;
+                };
             };
         });
     }
@@ -333,6 +341,18 @@ class FootballArenaGame {
 
         document.getElementById("switchAutoNext").addEventListener("change", (e) => {
             this.autoStartNext = e.target.checked;
+            if (!this.autoStartNext && this.autoNextTimeout) {
+                clearTimeout(this.autoNextTimeout);
+                this.autoNextTimeout = null;
+            } else if (this.autoStartNext && $('#winnerModal').hasClass('show') && !this.isRunning && !this.autoNextTimeout) {
+                this.autoNextTimeout = setTimeout(() => {
+                    $("#winnerModal").modal("hide");
+                    this.confetti.stop();
+                    this.currentRound++;
+                    this.setupRound();
+                    this.startRound();
+                }, 1500);
+            }
         });
 
         document.getElementById("btnNextRoundModal").addEventListener("click", () => {
@@ -354,19 +374,30 @@ class FootballArenaGame {
     }
 
     resizeCanvas() {
-        const wrapper = this.canvas.parentElement;
-        const size = Math.min(wrapper.clientWidth, 600);
-        this.canvas.width = size * window.devicePixelRatio;
-        this.canvas.height = size * window.devicePixelRatio;
-        this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        this.arenaRadius = (size / 2) * 0.82;
+        const dpr = window.devicePixelRatio || 1;
+        this.worldSize = 600;
+        this.canvas.width = this.worldSize * dpr;
+        this.canvas.height = this.worldSize * dpr;
+        
+        if (this.ctx.resetTransform) {
+            this.ctx.resetTransform();
+        } else {
+            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        }
+        this.ctx.scale(dpr, dpr);
+        this.arenaRadius = 246; // Fixed 246px radius inside 600x600 world space
+    }
+
+    resetWinRates() {
+        PLAYERS_MASTER.forEach(p => {
+            p.wins = 0;
+            p.rawWinWeight = 50;
+        });
+        this.recalculateWinRates();
     }
 
     generateRandomWinRates() {
-        PLAYERS_MASTER.forEach(p => {
-            p.rawWinWeight = Math.floor(Math.random() * 85) + 15;
-        });
-        this.recalculateWinRates();
+        this.resetWinRates();
     }
 
     recalculateWinRates() {
@@ -382,7 +413,7 @@ class FootballArenaGame {
         this.resizeCanvas();
         this.qualifiedPlayers = [];
         this.currentRound = 1;
-        this.generateRandomWinRates();
+        this.resetWinRates();
         this.setupRound();
     }
 
@@ -399,15 +430,21 @@ class FootballArenaGame {
 
         document.getElementById("roundBadge").innerText = `ROUND ${this.currentRound}`;
         document.getElementById("matchTimer").innerHTML = `<i class="fa-regular fa-clock mr-1"></i>0.0s`;
-        document.getElementById("btnStart").disabled = false;
-        document.getElementById("btnPause").disabled = true;
-        document.getElementById("btnPause").innerHTML = `<i class="fa-solid fa-pause mr-1"></i>Pause`;
+        
+        const btnStart = document.getElementById("btnStart");
+        const btnPause = document.getElementById("btnPause");
+        if (btnStart) btnStart.disabled = false;
+        if (btnPause) {
+            btnPause.disabled = true;
+            btnPause.innerHTML = `<i class="fa-solid fa-pause mr-1"></i>Pause`;
+            btnPause.classList.remove("btn-info");
+            btnPause.classList.add("btn-warning");
+        }
 
-        // Select available non-qualified players
-        const pool = PLAYERS_MASTER.filter(p => !this.qualifiedPlayers.some(q => q.id === p.id));
-        const selected = pool.slice(0, this.maxPlayerCount);
+        // Select all active players for every round
+        const selected = PLAYERS_MASTER.slice(0, this.maxPlayerCount);
 
-        const center = this.canvas.width / (2 * window.devicePixelRatio);
+        const center = 300; // Center of 600x600 world space
         const radius = this.arenaRadius * 0.55;
 
         // Position player discs evenly around inside the arena with high initial velocity
@@ -420,7 +457,7 @@ class FootballArenaGame {
                 y: center + Math.sin(angle) * dist,
                 vx: (Math.random() - 0.5) * 14.0,
                 vy: (Math.random() - 0.5) * 14.0,
-                radius: 22,
+                radius: 30,
                 mass: 1.0,
                 isEliminated: false
             };
@@ -439,8 +476,15 @@ class FootballArenaGame {
         this.isRunning = true;
         this.isPaused = false;
 
-        document.getElementById("btnStart").disabled = true;
-        document.getElementById("btnPause").disabled = false;
+        const btnStart = document.getElementById("btnStart");
+        const btnPause = document.getElementById("btnPause");
+        if (btnStart) btnStart.disabled = true;
+        if (btnPause) {
+            btnPause.disabled = false;
+            btnPause.innerHTML = `<i class="fa-solid fa-pause mr-1"></i>Pause`;
+            btnPause.classList.remove("btn-info");
+            btnPause.classList.add("btn-warning");
+        }
 
         this.audio.init();
 
@@ -460,11 +504,21 @@ class FootballArenaGame {
         if (!this.isRunning) return;
         this.isPaused = !this.isPaused;
         const btn = document.getElementById("btnPause");
-        btn.innerHTML = this.isPaused ? 
-            `<i class="fa-solid fa-play mr-1"></i>Resume` : 
-            `<i class="fa-solid fa-pause mr-1"></i>Pause`;
+        if (btn) {
+            if (this.isPaused) {
+                btn.innerHTML = `<i class="fa-solid fa-play mr-1"></i>Resume`;
+                btn.classList.remove("btn-warning");
+                btn.classList.add("btn-info");
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-pause mr-1"></i>Pause`;
+                btn.classList.remove("btn-info");
+                btn.classList.add("btn-warning");
+            }
+        }
 
-        if (!this.isPaused) this.loop();
+        if (!this.isPaused) {
+            this.loop();
+        }
     }
 
     resetTournament() {
@@ -477,13 +531,15 @@ class FootballArenaGame {
             this.autoNextTimeout = null;
         }
 
+        this.resetWinRates();
         this.initTournament();
-        this.logFeed(`🔄 Tournament reset! All stats cleared.`);
+        this.updateUI();
+        this.logFeed(`🔄 Tournament reset! All stats & win rates cleared.`);
     }
 
     // --- PHYSICS ENGINE LOOP ---
     updatePhysics() {
-        const center = this.canvas.width / (2 * window.devicePixelRatio);
+        const center = 300;
         
         // 1. Rotate Boundary Gap
         this.gapAngle += this.gapAngularSpeed * this.speedMultiplier;
@@ -562,24 +618,24 @@ class FootballArenaGame {
 
                 if (dist < minDist && dist > 0) {
                     // Separate overlapping discs
-                    const overlap = 0.5 * (minDist - dist);
+                    const overlap = minDist - dist;
                     const nx = dx / dist;
                     const ny = dy / dist;
 
-                    p1.x -= nx * overlap;
-                    p1.y -= ny * overlap;
-                    p2.x += nx * overlap;
-                    p2.y += ny * overlap;
+                    p1.x -= nx * (overlap / 2);
+                    p1.y -= ny * (overlap / 2);
+                    p2.x += nx * (overlap / 2);
+                    p2.y += ny * (overlap / 2);
 
-                    // Calculate elastic momentum transfer
+                    // Elastic momentum bounce exchange
                     const kx = p1.vx - p2.vx;
                     const ky = p1.vy - p2.vy;
-                    const p = 2 * (nx * kx + ny * ky) / (p1.mass + p2.mass);
+                    const p = 2 * (nx * kx + ny * ky) / 2;
 
-                    p1.vx -= p * p2.mass * nx * 0.96;
-                    p1.vy -= p * p2.mass * ny * 0.96;
-                    p2.vx += p * p1.mass * nx * 0.96;
-                    p2.vy += p * p1.mass * ny * 0.96;
+                    p1.vx -= p * nx * 0.96;
+                    p1.vy -= p * ny * 0.96;
+                    p2.vx += p * nx * 0.96;
+                    p2.vy += p * ny * 0.96;
 
                     this.audio.playBounce(Math.hypot(p1.vx, p1.vy));
                 }
@@ -630,6 +686,14 @@ class FootballArenaGame {
         this.isRunning = false;
         clearInterval(this.timerInterval);
 
+        const btnPause = document.getElementById("btnPause");
+        if (btnPause) {
+            btnPause.disabled = true;
+            btnPause.innerHTML = `<i class="fa-solid fa-pause mr-1"></i>Pause`;
+            btnPause.classList.remove("btn-info");
+            btnPause.classList.add("btn-warning");
+        }
+
         const masterPlayer = PLAYERS_MASTER.find(p => p.id === winner.id);
         if (masterPlayer) {
             masterPlayer.wins = (masterPlayer.wins || 0) + 1;
@@ -644,8 +708,8 @@ class FootballArenaGame {
         this.audio.playVictory();
 
         // Populate Winner Modal
-        document.getElementById("winnerHeaderTitle").innerText = `ROUND ${this.currentRound} QUALIFIER`;
-        document.getElementById("winnerMainTitle").innerText = `${winner.name} QUALIFIED!`;
+        document.getElementById("winnerHeaderTitle").innerText = `ROUND ${this.currentRound} WINNER`;
+        document.getElementById("winnerMainTitle").innerText = `${winner.name} WINS!`;
         document.getElementById("winnerName").innerText = winner.name;
         document.getElementById("winnerTeam").innerHTML = `${winner.flag} ${winner.team} • ${winner.country}`;
         document.getElementById("winnerJerseyTag").innerText = `#${winner.jersey}`;
@@ -659,10 +723,11 @@ class FootballArenaGame {
 
         const secs = (this.matchTimeMs / 1000).toFixed(1);
         document.getElementById("winnerTime").innerText = `${secs}s`;
-        document.getElementById("winnerStatus").innerText = `QUALIFIED FOR FINAL (#${this.qualifiedPlayers.length})`;
+        const totalWins = masterPlayer ? masterPlayer.wins : 1;
+        document.getElementById("winnerStatus").innerText = `TOTAL WINS: ${totalWins}`;
 
         this.updateUI();
-        this.logFeed(`🏆 <strong>${winner.name}</strong> wins Round ${this.currentRound} and qualifies for the Final!`);
+        this.logFeed(`🏆 <strong>${winner.name}</strong> wins Round ${this.currentRound}! (Total Wins: ${totalWins})`);
 
         // Show Modal & Trigger Confetti
         $("#winnerModal").modal("show");
@@ -767,43 +832,71 @@ class FootballArenaGame {
             this.ctx.save();
             this.ctx.translate(p.x, p.y);
 
-            // Disc Outer Glow & Border Ring
+            // Disc Outer Glow & Background
             this.ctx.beginPath();
             this.ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
             this.ctx.fillStyle = p.color || "#00d2ff";
             this.ctx.shadowColor = p.color || "#00d2ff";
-            this.ctx.shadowBlur = 10;
+            this.ctx.shadowBlur = 12;
             this.ctx.fill();
 
             // Avatar Image Clipping
             this.ctx.beginPath();
-            this.ctx.arc(0, 0, p.radius - 3, 0, Math.PI * 2);
+            this.ctx.arc(0, 0, p.radius - 2.5, 0, Math.PI * 2);
             this.ctx.clip();
 
             const img = this.imageCache[p.id];
-            if (img && img.complete) {
+            if (img && img.complete && img.naturalWidth !== 0) {
                 this.ctx.drawImage(img, -p.radius, -p.radius, p.radius * 2, p.radius * 2);
             } else {
                 // Fallback initial
                 this.ctx.fillStyle = "#1e293b";
                 this.ctx.fillRect(-p.radius, -p.radius, p.radius * 2, p.radius * 2);
                 this.ctx.fillStyle = "#ffffff";
-                this.ctx.font = "bold 14px Montserrat";
+                this.ctx.font = "bold 16px Montserrat";
                 this.ctx.textAlign = "center";
                 this.ctx.textBaseline = "middle";
                 this.ctx.fillText(p.name.charAt(0), 0, 0);
             }
 
+            // High contrast ring overlay around avatar
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, p.radius - 1.5, 0, Math.PI * 2);
+            this.ctx.lineWidth = 2.5;
+            this.ctx.strokeStyle = p.color || "#00d2ff";
+            this.ctx.stroke();
+
             this.ctx.restore();
 
-            // Flag & Jersey Number Tag Below Disc
+            // Flag & Jersey Number Tag Below Disc with semi-transparent background pill for ultra readability
             this.ctx.save();
-            this.ctx.font = "bold 11px Montserrat";
+            const tagText = `${p.flag} #${p.jersey}`;
+            this.ctx.font = "bold 12px Montserrat";
+            const textWidth = this.ctx.measureText(tagText).width;
+            
+            // Background pill box
+            this.ctx.fillStyle = "rgba(7, 11, 25, 0.88)";
+            this.ctx.strokeStyle = p.color || "rgba(0, 210, 255, 0.5)";
+            this.ctx.lineWidth = 1;
+            const pillX = p.x - textWidth / 2 - 6;
+            const pillY = p.y + p.radius + 6;
+            const pillW = textWidth + 12;
+            const pillH = 18;
+            
+            this.ctx.beginPath();
+            if (this.ctx.roundRect) {
+                this.ctx.roundRect(pillX, pillY, pillW, pillH, 9);
+            } else {
+                this.ctx.rect(pillX, pillY, pillW, pillH);
+            }
+            this.ctx.fill();
+            this.ctx.stroke();
+
+            // Text inside pill box
             this.ctx.fillStyle = "#ffffff";
             this.ctx.textAlign = "center";
-            this.ctx.shadowColor = "#000000";
-            this.ctx.shadowBlur = 4;
-            this.ctx.fillText(`${p.flag} #${p.jersey}`, p.x, p.y + p.radius + 12);
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(tagText, p.x, pillY + pillH / 2);
             this.ctx.restore();
         });
     }
@@ -843,21 +936,24 @@ class FootballArenaGame {
                 </div>`).join('');
         }
 
-        // Eliminated Grid Sidebar
+        // Eliminated Grid Sidebar (Safely checked in case element is removed)
         const eGrid = document.getElementById("eliminatedGrid");
-        document.getElementById("eliminatedCount").innerText = this.eliminatedPlayers.length;
-        if (this.eliminatedPlayers.length === 0) {
-            eGrid.innerHTML = `
-                <div class="empty-state text-center text-muted py-3">
-                    <p class="small m-0">No players eliminated yet.<br>Watch the rotating gap!</p>
-                </div>`;
-        } else {
-            eGrid.innerHTML = this.eliminatedPlayers.map((e, idx) => `
-                <div class="eliminated-card">
-                    <img src="${this.imageCache[e.id] ? this.imageCache[e.id].src : e.avatarUrl}" class="eliminated-avatar" alt="${e.name}">
-                    <span class="eliminated-name">${e.flag} ${e.name}</span>
-                    <span class="eliminated-rank-badge">#${total - idx}</span>
-                </div>`).join('');
+        const eCount = document.getElementById("eliminatedCount");
+        if (eCount) eCount.innerText = this.eliminatedPlayers.length;
+        if (eGrid) {
+            if (this.eliminatedPlayers.length === 0) {
+                eGrid.innerHTML = `
+                    <div class="empty-state text-center text-muted py-3">
+                        <p class="small m-0">No players eliminated yet.<br>Watch the rotating gap!</p>
+                    </div>`;
+            } else {
+                eGrid.innerHTML = this.eliminatedPlayers.map((e, idx) => `
+                    <div class="eliminated-card">
+                        <img src="${this.imageCache[e.id] ? this.imageCache[e.id].src : e.avatarUrl}" class="eliminated-avatar" alt="${e.name}">
+                        <span class="eliminated-name">${e.flag} ${e.name}</span>
+                        <span class="eliminated-rank-badge">#${total - idx}</span>
+                    </div>`).join('');
+            }
         }
     }
 
